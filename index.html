@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FIRE Path — Know Your FIRE Date</title>
+<meta name="description" content="FIRE Path is the most complete financial independence planner on iPhone. Monte Carlo simulation, historical backtesting, Roth conversion planning, and a full 50-state tax engine — private, on-device, free.">
+
+<meta property="og:title" content="FIRE Path — Know Your FIRE Date">
+<meta property="og:description" content="The most complete financial independence planner on iPhone. Monte Carlo simulation, historical backtesting, Roth conversion planning, and a full 50-state tax engine — private, on-device, free.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="assets/icon.png">
+<meta name="twitter:card" content="summary">
+
+<link rel="icon" href="assets/icon.png">
+<link rel="apple-touch-icon" href="assets/icon.png">
+
+<style>
+  :root{
+    --bg:#fbfaf9;
+    --bg-alt:#f3f1ee;
+    --surface:#ffffff;
+    --text:#171412;
+    --text-muted:#6b645d;
+    --border:#e8e4df;
+    --accent:#ff6a1a;
+    --accent-2:#ff3d00;
+    --accent-contrast:#ffffff;
+    --shadow: 0 20px 50px -20px rgba(23,20,18,0.25);
+  }
+
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#121011;
+      --bg-alt:#1a1717;
+      --surface:#1d1a1a;
+      --text:#f6f3f1;
+      --text-muted:#a89f97;
+      --border:#312c2a;
+      --accent:#ff7a2e;
+      --accent-2:#ff4d1c;
+      --accent-contrast:#171412;
+      --shadow: 0 20px 60px -20px rgba(0,0,0,0.6);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#121011;
+    --bg-alt:#1a1717;
+    --surface:#1d1a1a;
+    --text:#f6f3f1;
+    --text-muted:#a89f97;
+    --border:#312c2a;
+    --accent:#ff7a2e;
+    --accent-2:#ff4d1c;
+    --accent-contrast:#171412;
+    --shadow: 0 20px 60px -20px rgba(0,0,0,0.6);
+  }
+
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  img{ max-width:100%; display:block; }
+  a{ color:inherit; }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px;
+  }
+
+  /* Nav */
+  .nav{
+    position:sticky; top:0; z-index:20;
+    background:color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter:saturate(180%) blur(14px);
+    border-bottom:1px solid var(--border);
+  }
+  .nav-inner{
+    max-width:1120px; margin:0 auto; padding:14px 24px;
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .brand{ display:flex; align-items:center; gap:10px; font-weight:700; font-size:17px; text-decoration:none; }
+  .brand img{ width:28px; height:28px; border-radius:7px; }
+  .nav-cta{
+    display:inline-flex; align-items:center; gap:8px;
+    background:var(--text); color:var(--bg);
+    padding:9px 16px; border-radius:100px;
+    font-size:14px; font-weight:600; text-decoration:none;
+    white-space:nowrap;
+  }
+
+  /* Hero */
+  .hero{
+    padding:64px 0 40px;
+    display:grid;
+    grid-template-columns:1.05fr 0.95fr;
+    gap:48px;
+    align-items:center;
+  }
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    font-size:13px; font-weight:600; letter-spacing:.02em;
+    color:var(--accent);
+    background:color-mix(in srgb, var(--accent) 12%, transparent);
+    border:1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+    padding:6px 12px; border-radius:100px;
+    margin-bottom:20px;
+  }
+  h1{
+    font-size:clamp(34px, 5vw, 54px);
+    line-height:1.05;
+    letter-spacing:-0.02em;
+    margin:0 0 20px;
+    font-weight:800;
+  }
+  .accent-text{
+    background:linear-gradient(120deg, var(--accent), var(--accent-2));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+  .lede{
+    font-size:19px;
+    color:var(--text-muted);
+    max-width:46ch;
+    margin:0 0 32px;
+  }
+  .cta-row{ display:flex; gap:14px; flex-wrap:wrap; align-items:center; }
+  .btn-primary{
+    display:inline-flex; align-items:center; gap:10px;
+    background:linear-gradient(120deg, var(--accent), var(--accent-2));
+    color:var(--accent-contrast);
+    padding:14px 24px; border-radius:100px;
+    font-weight:700; font-size:16px; text-decoration:none;
+    box-shadow:0 12px 30px -10px color-mix(in srgb, var(--accent) 60%, transparent);
+  }
+  .btn-secondary{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:14px 22px; border-radius:100px;
+    font-weight:600; font-size:16px; text-decoration:none;
+    border:1px solid var(--border);
+    color:var(--text);
+  }
+  .trust-row{
+    display:flex; gap:20px; flex-wrap:wrap;
+    margin-top:28px;
+    font-size:13px; color:var(--text-muted);
+  }
+  .trust-row span{ display:inline-flex; align-items:center; gap:6px; }
+
+  .hero-art{ position:relative; display:flex; justify-content:center; }
+  .hero-art img{
+    width:min(320px, 78vw);
+    filter:drop-shadow(var(--shadow));
+  }
+  .hero-glow{
+    position:absolute; inset:-10% -10% auto -10%; height:110%;
+    background:radial-gradient(closest-side, color-mix(in srgb, var(--accent) 22%, transparent), transparent 70%);
+    z-index:-1;
+    filter:blur(10px);
+  }
+
+  /* Logos / stat strip */
+  .stat-strip{
+    border-top:1px solid var(--border);
+    border-bottom:1px solid var(--border);
+    background:var(--bg-alt);
+  }
+  .stat-strip-inner{
+    max-width:1120px; margin:0 auto; padding:28px 24px;
+    display:grid; grid-template-columns:repeat(4,1fr); gap:24px;
+    text-align:center;
+  }
+  .stat-num{ font-size:26px; font-weight:800; color:var(--accent); }
+  .stat-label{ font-size:13px; color:var(--text-muted); margin-top:4px; }
+
+  /* Feature sections */
+  .feature{
+    padding:88px 0;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:64px;
+    align-items:center;
+    border-bottom:1px solid var(--border);
+  }
+  .feature:last-of-type{ border-bottom:none; }
+  .feature.reverse .feature-art{ order:2; }
+  .feature.reverse .feature-copy{ order:1; }
+  .feature-art{ display:flex; justify-content:center; }
+  .feature-art img{
+    width:min(300px, 100%);
+    border-radius:28px;
+    box-shadow:var(--shadow);
+  }
+  .feature-tag{
+    display:inline-block;
+    font-size:12px; font-weight:700; letter-spacing:.04em; text-transform:uppercase;
+    color:var(--accent);
+    margin-bottom:12px;
+  }
+  .feature-copy h2{
+    font-size:clamp(24px,3vw,32px);
+    letter-spacing:-0.01em;
+    margin:0 0 16px;
+    font-weight:800;
+  }
+  .feature-copy p{
+    color:var(--text-muted);
+    font-size:17px;
+    max-width:44ch;
+    margin:0 0 20px;
+  }
+  .feature-list{
+    list-style:none; padding:0; margin:0;
+    display:grid; gap:10px;
+  }
+  .feature-list li{
+    display:flex; gap:10px; align-items:flex-start;
+    font-size:15px; color:var(--text);
+  }
+  .feature-list li::before{
+    content:"";
+    flex:none;
+    width:18px; height:18px; margin-top:2px;
+    border-radius:50%;
+    background:linear-gradient(120deg, var(--accent), var(--accent-2));
+    -webkit-mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='black' d='M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z'/></svg>") center/60% no-repeat;
+    mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='black' d='M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z'/></svg>") center/60% no-repeat;
+  }
+
+  /* Grid of small feature cards */
+  .more{
+    padding:88px 0;
+    background:var(--bg-alt);
+    border-bottom:1px solid var(--border);
+  }
+  .more h2{
+    font-size:clamp(24px,3vw,32px);
+    text-align:center;
+    margin:0 0 12px;
+    letter-spacing:-0.01em;
+    font-weight:800;
+  }
+  .more .sub{
+    text-align:center; color:var(--text-muted); font-size:17px;
+    max-width:52ch; margin:0 auto 48px;
+  }
+  .card-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:20px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:24px;
+  }
+  .card .ico{
+    width:40px; height:40px;
+    border-radius:11px;
+    display:flex; align-items:center; justify-content:center;
+    background:linear-gradient(135deg, color-mix(in srgb, var(--accent) 20%, transparent), color-mix(in srgb, var(--accent-2) 20%, transparent));
+    font-size:19px;
+    margin-bottom:14px;
+  }
+  .card h3{ font-size:16px; margin:0 0 8px; font-weight:700; }
+  .card p{ font-size:14px; color:var(--text-muted); margin:0; }
+
+  /* Privacy band */
+  .privacy{
+    padding:80px 0;
+    text-align:center;
+  }
+  .privacy h2{
+    font-size:clamp(24px,3vw,32px);
+    margin:0 0 14px;
+    font-weight:800;
+    letter-spacing:-0.01em;
+  }
+  .privacy p{
+    color:var(--text-muted); font-size:17px;
+    max-width:56ch; margin:0 auto;
+  }
+  .privacy-badges{
+    display:flex; gap:12px; justify-content:center; flex-wrap:wrap;
+    margin-top:28px;
+  }
+  .badge{
+    font-size:13px; font-weight:600;
+    border:1px solid var(--border);
+    padding:8px 14px; border-radius:100px;
+    color:var(--text);
+  }
+
+  /* Final CTA */
+  .final-cta{
+    padding:90px 0 100px;
+    text-align:center;
+    background:linear-gradient(180deg, transparent, color-mix(in srgb, var(--accent) 8%, transparent));
+  }
+  .final-cta h2{
+    font-size:clamp(28px,4vw,40px);
+    margin:0 0 16px;
+    font-weight:800;
+    letter-spacing:-0.02em;
+  }
+  .final-cta p{
+    color:var(--text-muted); font-size:18px;
+    margin:0 0 32px;
+  }
+
+  footer{
+    border-top:1px solid var(--border);
+    padding:36px 0 48px;
+  }
+  .footer-inner{
+    display:flex; justify-content:space-between; align-items:center;
+    flex-wrap:wrap; gap:16px;
+    font-size:13px; color:var(--text-muted);
+  }
+  .footer-links{ display:flex; gap:20px; flex-wrap:wrap; }
+  .footer-links a{ text-decoration:none; color:var(--text-muted); }
+  .footer-links a:hover{ color:var(--text); }
+
+  @media (max-width: 860px){
+    .hero{ grid-template-columns:1fr; padding-top:40px; text-align:center; }
+    .cta-row{ justify-content:center; }
+    .trust-row{ justify-content:center; }
+    .lede{ margin-left:auto; margin-right:auto; }
+    .hero-art{ order:-1; }
+    .stat-strip-inner{ grid-template-columns:repeat(2,1fr); }
+    .feature{ grid-template-columns:1fr; padding:56px 0; text-align:center; }
+    .feature.reverse .feature-art, .feature.reverse .feature-copy{ order:initial; }
+    .feature-copy p{ margin-left:auto; margin-right:auto; }
+    .feature-list{ text-align:left; max-width:340px; margin:0 auto; }
+    .card-grid{ grid-template-columns:1fr 1fr; }
+  }
+  @media (max-width: 520px){
+    .card-grid{ grid-template-columns:1fr; }
+    .nav-cta span.long{ display:none; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="#top">
+      <img src="assets/icon.png" alt="FIRE Path icon">
+      FIRE Path
+    </a>
+    <a class="nav-cta" href="https://apps.apple.com/us/app/fire-path-fi-planner/id6779468041" target="_blank" rel="noopener">
+       Download <span class="long">on the App Store</span>
+    </a>
+  </div>
+</nav>
+
+<main id="top">
+
+  <header class="wrap hero">
+    <div>
+      <div class="eyebrow">✦ Free on the App Store</div>
+      <h1>Know your <span class="accent-text">FIRE date.</span><br>Built from your real numbers.</h1>
+      <p class="lede">FIRE Path is the most complete financial independence planner on iPhone — Monte Carlo simulation, historical backtesting, Roth conversion planning, and a full 50-state tax engine, all private and on-device.</p>
+      <div class="cta-row">
+        <a class="btn-primary" href="https://apps.apple.com/us/app/fire-path-fi-planner/id6779468041" target="_blank" rel="noopener">
+          Get FIRE Path — Free
+        </a>
+        <a class="btn-secondary" href="#features">See what's inside</a>
+      </div>
+      <div class="trust-row">
+        <span>🔒 No account required</span>
+        <span>📵 No data sold</span>
+        <span>💸 Free, no subscription</span>
+      </div>
+    </div>
+    <div class="hero-art">
+      <div class="hero-glow"></div>
+      <img src="assets/shot-dashboard.png" alt="FIRE Path dashboard showing net worth and FI progress">
+    </div>
+  </header>
+
+  <div class="stat-strip">
+    <div class="stat-strip-inner">
+      <div>
+        <div class="stat-num">50</div>
+        <div class="stat-label">states, full tax engine</div>
+      </div>
+      <div>
+        <div class="stat-num">4</div>
+        <div class="stat-label">FIRE paths: Standard, Barista, Coast, Lean</div>
+      </div>
+      <div>
+        <div class="stat-num">150+</div>
+        <div class="stat-label">years of historical backtesting</div>
+      </div>
+      <div>
+        <div class="stat-num">1,000s</div>
+        <div class="stat-label">of Monte Carlo simulations, on-device</div>
+      </div>
+    </div>
+  </div>
+
+  <section id="features" class="wrap feature">
+    <div class="feature-art">
+      <img src="assets/shot-fipath.png" alt="FIRE Path projection chart with Standard, Barista, and Coast FIRE scenarios">
+    </div>
+    <div class="feature-copy">
+      <span class="feature-tag">Your plan</span>
+      <h2>Four paths to freedom, calculated from your actual life</h2>
+      <p>Not a generic guess — your projection is built from your real salary, RSU vesting, 401(k) contributions, spending, and debt.</p>
+      <ul class="feature-list">
+        <li>Standard, Barista, Coast, and Lean FIRE — switch with a tap</li>
+        <li>See how cutting spending or part-time work shifts your date</li>
+        <li>Net worth, savings rate, and "years of freedom" tracked together</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="wrap feature reverse">
+    <div class="feature-art">
+      <img src="assets/shot-montecarlo.png" alt="Monte Carlo simulation showing 98% success rate across 3000 simulations">
+    </div>
+    <div class="feature-copy">
+      <span class="feature-tag">Stress-test it</span>
+      <h2>Will your money actually last?</h2>
+      <p>Don't just trust a single deterministic line. Run thousands of market scenarios and see the real odds.</p>
+      <ul class="feature-list">
+        <li>Monte Carlo simulation with percentile bands (10th–90th)</li>
+        <li>Historical backtesting against every market cycle since 1871</li>
+        <li>"Your plan would have survived 96% of historical 40-year periods"</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="wrap feature">
+    <div class="feature-art">
+      <img src="assets/shot-withdrawal.png" alt="Withdrawal strategy comparison: 4% rule vs constant percentage vs guardrails vs VPW">
+    </div>
+    <div class="feature-copy">
+      <span class="feature-tag">Beyond the 4% rule</span>
+      <h2>Compare withdrawal strategies side by side</h2>
+      <p>The 4% rule is a starting point, not the answer. See exactly how different strategies trade off spending stability against plan longevity.</p>
+      <ul class="feature-list">
+        <li>Fixed 4% rule, Guyton-Klinger guardrails, constant %, and VPW</li>
+        <li>Success rate and median spending compared for each</li>
+        <li>Tax-efficient withdrawal order across taxable, tax-deferred, and Roth</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="wrap feature reverse">
+    <div class="feature-art">
+      <img src="assets/shot-advanced.png" alt="Advanced planning tools: withdrawal order, spending phases, ACA healthcare, Roth conversion ladder, mega backdoor Roth">
+    </div>
+    <div class="feature-copy">
+      <span class="feature-tag">For serious planners</span>
+      <h2>The advanced tools other calculators skip</h2>
+      <p>Most free FIRE calculators stop at a single number. FIRE Path goes as deep as a fee-only financial planner.</p>
+      <ul class="feature-list">
+        <li>Roth conversion ladder planner, tax-bracket aware</li>
+        <li>Social Security claiming-age optimizer with spousal benefits</li>
+        <li>ACA subsidy cliff and IRMAA Medicare surcharge modeling</li>
+        <li>Mega backdoor Roth and pension integration</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="more">
+    <div class="wrap">
+      <h2>Everything else, in one place</h2>
+      <p class="sub">FIRE Path also tracks the day-to-day so your projection stays accurate as life changes.</p>
+      <div class="card-grid">
+        <div class="card">
+          <div class="ico">🏠</div>
+          <h3>Net worth &amp; accounts</h3>
+          <p>Every account type, home equity, debt payoff timelines, and net worth history tracked monthly.</p>
+        </div>
+        <div class="card">
+          <div class="ico">📈</div>
+          <h3>RSU &amp; equity comp</h3>
+          <p>Vesting schedules with live stock prices, factored directly into your income and FI projection.</p>
+        </div>
+        <div class="card">
+          <div class="ico">🎓</div>
+          <h3>529 college planning</h3>
+          <p>Per-child college savings projections alongside your own FIRE timeline.</p>
+        </div>
+        <div class="card">
+          <div class="ico">🔀</div>
+          <h3>What-if scenarios</h3>
+          <p>Model job changes, windfalls, or an earlier retirement date and see the impact instantly.</p>
+        </div>
+        <div class="card">
+          <div class="ico">✦</div>
+          <h3>On-device AI assistant</h3>
+          <p>Ask "how much sooner could I retire if I cut $500/month?" and get an answer using your real numbers.</p>
+        </div>
+        <div class="card">
+          <div class="ico">📱</div>
+          <h3>Widgets &amp; sync</h3>
+          <p>Home screen widgets, Face ID lock, and private iCloud sync across your Apple devices.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap privacy">
+    <h2>Built for privacy, not for selling your data</h2>
+    <p>All data stays on your device and syncs privately via iCloud. No account to create, no bank linking required, no data sold. Face ID protection available.</p>
+    <div class="privacy-badges">
+      <span class="badge">🔒 On-device by default</span>
+      <span class="badge">☁️ Private iCloud sync</span>
+      <span class="badge">🚫 No ads</span>
+      <span class="badge">🚫 No account required</span>
+    </div>
+  </section>
+
+  <section class="final-cta">
+    <div class="wrap">
+      <h2>Your FIRE date is closer than you think.</h2>
+      <p>Free to download. No subscription, ever.</p>
+      <a class="btn-primary" href="https://apps.apple.com/us/app/fire-path-fi-planner/id6779468041" target="_blank" rel="noopener">
+        Get FIRE Path on the App Store
+      </a>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap footer-inner">
+    <span>© 2026 FIRE Path</span>
+    <div class="footer-links">
+      <a href="https://apps.apple.com/us/app/fire-path-fi-planner/id6779468041" target="_blank" rel="noopener">App Store</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
