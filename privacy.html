@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FIRE Path — Privacy Policy</title>
+<meta name="description" content="FIRE Path privacy policy — your financial data stays on your device and syncs privately via your own iCloud account. No accounts, no ads, no data sold.">
+
+<link rel="icon" href="assets/icon.png">
+<link rel="apple-touch-icon" href="assets/icon.png">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="index.html">
+      <img src="assets/icon.png" alt="FIRE Path icon">
+      FIRE Path
+    </a>
+    <a class="nav-cta" href="https://apps.apple.com/us/app/fire-path-fi-planner/id6779468041" target="_blank" rel="noopener">
+       Download <span class="long">on the App Store</span>
+    </a>
+  </div>
+</nav>
+
+<main>
+  <div class="wrap legal">
+    <h1>Privacy Policy</h1>
+    <p class="updated">Last updated: August 2026</p>
+
+    <p>FIRE Path ("the app") is built around a simple principle: your financial information is yours. This policy explains, in plain language, what data the app handles and where it goes.</p>
+
+    <h2>The short version</h2>
+    <ul>
+      <li>All the financial data you enter — income, accounts, balances, spending, goals — is stored locally on your device.</li>
+      <li>If you enable iCloud sync, that data syncs privately between your own devices through your personal iCloud account. It does not pass through any server we operate, because we don't operate one.</li>
+      <li>We don't require an account, don't collect your name or email to use the app, don't run analytics or crash-reporting SDKs, and don't sell or share your data with anyone.</li>
+      <li>There are no ads in the app.</li>
+    </ul>
+
+    <h2>What data the app stores</h2>
+    <p>Everything you enter — household income, account balances and types, RSU/equity grants, expenses, debts, housing details, goals, and settings like your target withdrawal rate or tax assumptions — is stored using Apple's on-device SwiftData framework. It lives in the app's private storage on your phone or Mac.</p>
+
+    <h2>iCloud sync</h2>
+    <p>If you enable sync, your data is stored in your personal iCloud account (via Apple's CloudKit) so it can appear on your other Apple devices signed into the same iCloud account. This sync is handled entirely by Apple's infrastructure under your iCloud account and Apple's own privacy terms — FIRE Path has no separate server and never sees this data in transit.</p>
+
+    <h2>Stock prices (Finnhub)</h2>
+    <p>If you track RSU or equity grants and want live stock prices, you can enter your own free API key from <a href="https://finnhub.io" target="_blank" rel="noopener">Finnhub</a> in Settings. When you do, your device requests a stock quote directly from Finnhub using that key — this request contains only a ticker symbol, not any of your personal or financial data. This feature is entirely optional; the app works fully without it.</p>
+
+    <h2>On-device AI assistant</h2>
+    <p>The AI assistant runs using Apple's on-device Foundation Models framework. Your questions and financial context are processed locally on your device to generate a response — they are not sent to us or to any third-party AI service.</p>
+
+    <h2>Notifications</h2>
+    <p>Any reminders or scheduled notifications (e.g. RSU vesting alerts) are scheduled locally on your device using Apple's local notification system. They don't require or use a push notification server, and no notification content leaves your device.</p>
+
+    <h2>Face ID / biometric lock</h2>
+    <p>If you enable Face ID or passcode lock, authentication is handled entirely by Apple's LocalAuthentication framework on-device. FIRE Path never receives or stores any biometric data.</p>
+
+    <h2>What we don't do</h2>
+    <ul>
+      <li>We don't require you to create an account.</li>
+      <li>We don't use third-party analytics, advertising, or crash-reporting SDKs.</li>
+      <li>We don't access your location, contacts, or health data.</li>
+      <li>We don't sell, rent, or share your data with advertisers or data brokers.</li>
+    </ul>
+
+    <h2>Deleting your data</h2>
+    <p>You can permanently erase all data stored by the app at any time from Settings → "Erase All Data." If iCloud sync is enabled, this also removes the synced copy from your iCloud account.</p>
+
+    <h2>Children's privacy</h2>
+    <p>FIRE Path is a financial planning tool intended for adults and is not directed at children. It does not knowingly collect information from children.</p>
+
+    <h2>Changes to this policy</h2>
+    <p>If this policy changes, we'll update the date at the top of this page. Since the app doesn't collect contact information from you, we're not able to notify you directly — check back here if you have concerns.</p>
+
+    <h2>Contact</h2>
+    <p>Questions about this policy or how the app handles data? Email us at <a href="mailto:firepathappofficial@gmail.com">firepathappofficial@gmail.com</a>, or see the <a href="support.html">Support page</a>.</p>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap footer-inner">
+    <span>© 2026 FIRE Path</span>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="support.html">Support</a>
+      <a href="https://apps.apple.com/us/app/fire-path-fi-planner/id6779468041" target="_blank" rel="noopener">App Store</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
